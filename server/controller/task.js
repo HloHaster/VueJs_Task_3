@@ -1,5 +1,5 @@
-const db = require('../db')
 const TaskValidator = require('../validator/taskValidator')
+const TaskRepository = require('../repository/taskRepository')
 
 class TaskController {
     async createTask(req, res) {
@@ -10,25 +10,31 @@ class TaskController {
             description,
             status
         }
-        TaskValidator.isTaskFieldEmpty(task)
-         try {
-             const id = await db.query('INSERT INTO task (title, deadline, description, status) values ($1, $2, $3, $4) RETURNING id', [title, deadline, description, status])
-             task.id = id
-             res.json(task)
-         } catch {
-             res.status(500)
-             res.json({errorMessage: "Unexpected error occurred on the server"})
-         }
+        if (TaskValidator.isValid(task)) {
+            try {
+                let id = await TaskRepository.create(task)
+                task.id = id
+                res.json(task)
+            } catch(e) {
+                res.status(500)
+                res.json({errorMessage: "Unexpected error occurred on the server"})
+            }
+        } else {
+            res.status(400)
+            res.json({errorMessage: "Task's fields must not be empty"})
+        }
     }
+
     async getTasks(req, res) {
         try {
-            const tasks = await db.query('SELECT * FROM task')
+            const tasks = await TaskRepository.getAll()
             res.json(tasks.rows)
         } catch {
             res.status(500)
             res.json({errorMessage: "Unexpected error occurred on the server"})
         }
     }
+
     async getOneTask(req, res) {
         const id = req.params.id
         try {
@@ -39,9 +45,11 @@ class TaskController {
             res.json({errorMessage: "Unexpected error occurred on the server"})
         }
     }
+
     async updateTask(req, res) {
 
     }
+
     async deleteTask(req, res) {
         const id = req.params.id
         try {
