@@ -6,11 +6,12 @@ export default createStore({
     return {
       tasks: [],
       numberOfActiveTasks: 0,
+      task: {},
     }
   },
   getters: {
     tasks: state => state.tasks,
-    // numberOfActiveTasks: state => state.tasks.filter(task => task.status === 'active').length,
+    task: state => state.task,
     activeTasks: state => state.tasks.filter(task => task.status === 'active'),
     numberOfActiveTasks: (_, getters) => getters.activeTasks.length,
   },
@@ -18,16 +19,29 @@ export default createStore({
     setTasks(state, data) {
       state.tasks = data
     },
+    setOneTask(state, data) {
+      state.task = data
+    },
+    updateStatusOfTask(state, data) {
+      const idx = state.tasks.findIndex(task => task.id === data.id)
+      state.tasks[idx] = data
+      state.task = data
+    },
+    updateTask(state, data) {
+      const idx = state.tasks.findIndex(task => task.id === data.id)
+      state.tasks[idx] = data
+      state.task = data
+    },
   },
   actions: {
     async createNewTask({commit}, task) {
-      if (task.date < new Date()) {
+      if (task.deadline < new Date()) {
         task.status = 'cancelled'
       }
       await axios.post('http://localhost:3000/tasks', task)
       this.state.tasks.push(task)
     },
-    async loadTasks({commit}) {
+    async loadTasks({commit}, size, page) {
       const {data} = await axios.get('http://localhost:3000/tasks')
       const res = Object.keys(data).map(key => {
         return {
@@ -37,14 +51,27 @@ export default createStore({
       commit('setTasks', res)
     },
     async findOneTask({commit}, id) {
-      return await axios.get(`http://localhost:3000/tasks/${id}`)
+      const {data} = await axios.get(`http://localhost:3000/tasks/${id}`)
+      commit('setOneTask', data[0])
     },
     async removeTask({commit}, id) {
-      console.log('hi')
-      // const res = await axios.delete(`http://localhost:3000/tasks/${id}`)
-      // console.log(res)
-      // this.state.tasks.delete(res)
+      // todo: подумать, если двое пользователей будет, и изменится массив в ходе работы
+      await axios.delete(`http://localhost:3000/tasks/${id}`)
+      for (let i = 0; i< this.state.tasks.length; i++) {
+        if (this.state.tasks.find(task => task.id === id)) {
+          this.state.tasks.splice(i, 1)
+          break
+        }
+      }
     },
+    async updateStatusOfTask({commit}, taskToChange) {
+      const {data} = await axios.put(`http://localhost:3000/tasks/`, taskToChange)
+      commit('updateStatusOfTask', data)
+    },
+    async updateTask({commit}, taskToUpdate) {
+      const {data} = await axios.put(`http://localhost:3000/tasks/`, taskToUpdate)
+      commit('updateTask', data)
+    }
   },
   modules: {
   }

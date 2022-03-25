@@ -448,3 +448,38 @@ h3 {
 [v-cloak] {
     display: none;
 }
+
+.pagination {
+    display: flex;
+    justify-content: end;
+}
+
+.pagination a {
+    color: white;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #3eaf7c;
+    border-radius: 5px;
+}
+
+.text-end {
+    text-align: end;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.justify-end {
+    justify-content: end;
+}

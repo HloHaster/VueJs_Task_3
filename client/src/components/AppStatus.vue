@@ -27,8 +27,9 @@ export default {
       statusName: '',
     }
   },
-  computed: {
-
+  watch(props, val) {
+    this.className.value = this.classes[val.type]
+    this.statusName.value = this.statuses[val.type]
   },
   mounted() {
     this.className = this.classes[this.type]

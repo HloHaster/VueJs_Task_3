@@ -48,8 +48,8 @@ export default {
     const submitForm = () => {
       const task = {
         title: title.value,
-        // todo: in database 20 hours
-        date: new Date(date.value).setHours(23, 59, 59),
+        // todo: add time
+        deadline: new Date(date.value),
         description: description.value,
         status: 'active',
       }

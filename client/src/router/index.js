@@ -16,6 +16,11 @@ const routes = [
     path: '/task/:id',
     name: 'Task',
     component: () => import('../views/Task')
+  },
+  {
+    path: '/change/:id',
+    name: 'Change',
+    component: () => import('../views/Change')
   }
 ]
 

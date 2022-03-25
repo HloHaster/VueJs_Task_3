@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar">
     <h3>
-      Freelance
+      <router-link to="/">Freelance</router-link>
     </h3>
 
     <ul class="navbar-menu">
