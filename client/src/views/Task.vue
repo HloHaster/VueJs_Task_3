@@ -33,8 +33,8 @@ export default {
   },
   methods: {
     setStatus(status) {
-      const taskToChange = {...this.task, status}
-      this.$store.dispatch('updateStatusOfTask', taskToChange)
+      const taskToUpdate = {...this.task, status}
+      this.$store.dispatch('updateTask', taskToUpdate)
     }
   },
   computed: {

@@ -11,6 +11,9 @@
       <li>
         <router-link to="/new">Создать</router-link>
       </li>
+      <li>
+        <router-link to="/edit">Редактировать задачи</router-link>
+      </li>
     </ul>
   </nav>
 </template>

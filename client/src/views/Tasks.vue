@@ -69,18 +69,19 @@ export default {
       return this.$store.getters.activeTasks;
     },
     pageCount(){
-      let l = this.tasks().length,
+      let l = this.tasks.length,
           s = this.size;
       return Math.ceil(l/s);
     },
   },
   // todo: сперва отображается "Задач пока нет"
   mounted() {
-    this.$store.dispatch('loadTasks', this.size)
+    // this.$store.dispatch('loadTasks', this.size)
+    this.$store.dispatch('loadTasks')
   },
   created() {
-    window.addEventListener('resize', this.windowWidth);
-    this.windowWidth()
+    // window.addEventListener('resize', this.windowWidth);
+    // this.windowWidth()
   },
   components: {Pagination, AppStatus},
 }

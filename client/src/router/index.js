@@ -13,6 +13,11 @@ const routes = [
     component: () => import('../views/New')
   },
   {
+    path: '/edit',
+    name: 'Edit',
+    component: () => import('../views/Edit')
+  },
+  {
     path: '/task/:id',
     name: 'Task',
     component: () => import('../views/Task')
@@ -20,7 +25,7 @@ const routes = [
   {
     path: '/change/:id',
     name: 'Change',
-    component: () => import('../views/Change')
+    component: () => import('../views/ChangeOne')
   }
 ]
 
