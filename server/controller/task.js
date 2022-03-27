@@ -26,9 +26,10 @@ class TaskController {
     }
 
     async getTasks(req, res) {
-        const { page, size } = req.query;
+        // const { page, size } = req.query;
         try {
-            const tasks = await TaskRepository.getAll(page, size)
+            // const tasks = await TaskRepository.getAll(page, size)
+            const tasks = await TaskRepository.getAll()
             res.json(tasks.rows)
         } catch {
             res.status(500)
